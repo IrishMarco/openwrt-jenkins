@@ -6,12 +6,9 @@ node('docker') {
 
         checkout scm
 
-        def env = docker {
-           image 'irishmarco/openwrt-builder:18.04'
-           args  '-e USER=jenkins -e HOME=/home/jenkins -v /home/jenkins:/home/jenkins'
-        }
+	def env = docker.image('irishmarco/openwrt-builder:18.04')
 
-        env.inside("") {
+        env.inside("-e USER=jenkins -e HOME=/home/jenkins -v /home/jenkins:/home/jenkins") {
           withEnv([
             "VERSION=1"
           ]) {
