@@ -4,10 +4,12 @@ node('docker') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
       stage('Environment') {
 
-        checkout scm
-
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
+        env.inside("-u 1001:1001") {
+          withEnv([
+            "RELEASE_NAME=$VERSION"
+          ]) {
               stage('Prepare environment') {
                 sh '''#!/bin/bash
                   set -xe
@@ -68,6 +70,8 @@ node('docker') {
                   make -j32 V=s
                 '''
               }
+          }
+        }
       }
     }
   }
