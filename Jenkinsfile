@@ -6,7 +6,10 @@ node('docker') {
 
         checkout scm
 
-        def env = docker.image('irishmarco/openwrt-builder:18.04')
+        def env = docker {
+           image 'irishmarco/openwrt-builder:18.04'
+           args  '-e USER=jenkins -e HOME=/home/jenkins -v /home/jenkins:/home/jenkins'
+        }
 
         env.inside("") {
           withEnv([
@@ -25,8 +28,8 @@ node('docker') {
                   git pull
                   pwd
 
-                  ../docker-wrapper.sh ./scripts/feeds update -a
-                  ../docker-wrapper.sh ./scripts/feeds install -a
+                  ./scripts/feeds update -a
+                  ./scripts/feeds install -a
                 '''
               }
 
@@ -36,8 +39,8 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.x86_32.config .config
-                  ../docker-wrapper.sh make oldconfig
-                  ../docker-wrapper.sh make -j32 V=s
+                  make oldconfig
+                  make -j32 V=s
                 '''
               }
 
@@ -47,8 +50,8 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.x86_64.config .config
-                  ../docker-wrapper.sh make oldconfig
-                  ../docker-wrapper.sh make -j32 V=s
+                  make oldconfig
+                  make -j32 V=s
                 '''
               }
 
