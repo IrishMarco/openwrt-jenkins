@@ -8,12 +8,6 @@ node('docker') {
 
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
-	sh("chown -R 1001:1001 ../OpenWRT*")
-
-        env.inside("-u 1001:1001") {
-          withEnv([
-            "RELEASE_NAME=$VERSION"
-          ]) {
               stage('Prepare environment') {
                 sh '''#!/bin/bash
                   set -xe
@@ -74,8 +68,6 @@ node('docker') {
                   make -j32 V=s
                 '''
               }
-          }
-        }
       }
     }
   }
