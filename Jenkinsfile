@@ -8,7 +8,7 @@ node('docker') {
 
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
-	sh("chown -R 1001:1001 .")
+	sh("chown -R 1001:1001 ../OpenWRT*")
 
         env.inside("-u 1001:1001") {
           withEnv([
