@@ -4,6 +4,8 @@ node('docker') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
       stage('Environment') {
 
+        checkout scm
+
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
         env.inside("") {
