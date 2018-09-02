@@ -5,6 +5,7 @@
 #   HOME_DIR
 
 HOME_DIR="${HOME_DIR:-$PWD}"
+USER=jenkins
 
 # Check we are in the right directory
 docker run --rm \
@@ -16,4 +17,4 @@ docker run --rm \
 	-h openwrt-builder \
 	-v $HOME_DIR:$HOME_DIR \
 	-w $HOME_DIR \
-	irishmarco/openwrt-builder:18.04 bash
+	irishmarco/openwrt-builder:18.04 $*
