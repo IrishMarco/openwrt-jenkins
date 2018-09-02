@@ -18,6 +18,8 @@ node('docker') {
                 sh '''#!/bin/bash
                   set -xe
 
+		  id
+
                   if [ ! -d openwrt ]; then
                     git clone https://git.openwrt.org/openwrt/openwrt.git/ -b openwrt-18.06
                   fi
