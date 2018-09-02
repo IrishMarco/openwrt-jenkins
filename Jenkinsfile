@@ -33,8 +33,9 @@ node('docker') {
                 sh '''#!/bin/bash
                   set -xe
 
+                  cd openwrt
                   make clean
-                  cp ~/openwrt-18.01.x86_32 .config
+                  cp ../openwrt-18.01.x86_32.config .config
                   make -j32
                 '''
               }
@@ -43,8 +44,9 @@ node('docker') {
                 sh '''#!/bin/bash
                   set -xe
 
+                  cd openwrt
                   make clean
-                  cp ~/openwrt-18.01.x86_64 .config
+                  cp ../openwrt-18.01.x86_64.config .config
                   make -j32
                 '''
               }
@@ -53,8 +55,9 @@ node('docker') {
                 sh '''#!/bin/bash
                   set -xe
 
+                  cd openwrt
                   make clean
-                  cp ~/openwrt-18.01.raspberrypi .config
+                  cp ../openwrt-18.01.raspberrypi.config .config
                   make -j32
                 '''
               }
@@ -63,8 +66,9 @@ node('docker') {
                 sh '''#!/bin/bash
                   set -xe
 
+                  cd openwrt
                   make clean
-                  cp ~/openwrt-18.01.pine64 .config
+                  cp ../openwrt-18.01.pine64.config .config
                   make -j32
                 '''
               }
