@@ -8,7 +8,7 @@ node('docker') {
 
         env.inside("-u 1001:1001") {
           withEnv([
-            "RELEASE_NAME=$VERSION"
+            "VERSION=1"
           ]) {
               stage('Prepare environment') {
                 sh '''#!/bin/bash
