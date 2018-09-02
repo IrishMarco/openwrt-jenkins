@@ -8,7 +8,7 @@ node('docker') {
 
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
-        env.inside("") {
+        env.inside("-u 1001:1001") {
           withEnv([
             "RELEASE_NAME=$VERSION"
           ]) {
