@@ -1,83 +1,69 @@
-properties([
-  parameters([
-    string(defaultValue: '1.0', description: 'Version', name: 'VERSION'),
-  ])
-])
+pipeline {
 
-node('docker') {
-  timestamps {
-    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
-      stage('Environment') {
+  agent {
+    docker {
+      image 'irishmarco/openwrt-builder:18.04'
+    }
+  }
 
-        def env = docker.image('irishmarco/openwrt-builder:18.04')
+  stages {
+    stage('Prepare environment') {
+      sh '''#!/bin/bash
+            set -xe
 
-        env.inside("-u 1001:1001") {
-          withEnv([
-            "VERSION=1"
-          ]) {
-              stage('Prepare environment') {
-                sh '''#!/bin/bash
-                  set -xe
+            if [ ! -d openwrt ]; then
+              git clone https://git.openwrt.org/openwrt/openwrt.git/ -b openwrt-18.06
+            fi
+            cd openwrt
+            git pull
 
-		  id
+            ./scripts/feeds update -a
+            ./scripts/feeds install -a
+          '''
+    }
 
-                  if [ ! -d openwrt ]; then
-                    git clone https://git.openwrt.org/openwrt/openwrt.git/ -b openwrt-18.06
-                  fi
-                  cd openwrt
-                  git pull
+    stage('VirtualBox i368') {
+      sh '''#!/bin/bash
+        set -xe
 
-                  ./scripts/feeds update -a
-                  ./scripts/feeds install -a
-                '''
-              }
+        cd openwrt
+        cp ../openwrt-18.01.x86_32.config .config
+        make oldconfig
+        make -j32 V=s
+      '''
+    }
 
-              stage('VirtualBox i368') {
-                sh '''#!/bin/bash
-                  set -xe
+    stage('VirtualBox x64') {
+      sh '''#!/bin/bash
+        set -xe
 
-                  cd openwrt
-                  cp ../openwrt-18.01.x86_32.config .config
-                  make oldconfig
-                  make -j32 V=s
-                '''
-              }
+        cd openwrt
+        cp ../openwrt-18.01.x86_64.config .config
+        make oldconfig
+        make -j32 V=s
+      '''
+    }
 
-              stage('VirtualBox x64') {
-                sh '''#!/bin/bash
-                  set -xe
+    stage('RaspberryPi') {
+      sh '''#!/bin/bash
+        set -xe
 
-                  cd openwrt
-                  cp ../openwrt-18.01.x86_64.config .config
-                  make oldconfig
-                  make -j32 V=s
-                '''
-              }
+        cd openwrt
+        cp ../openwrt-18.01.raspberrypi.config .config
+        make oldconfig
+        make -j32 V=s
+      '''
+    }
 
-              stage('RaspberryPi') {
-                sh '''#!/bin/bash
-                  set -xe
+    stage('Pine64') {
+      sh '''#!/bin/bash
+        set -xe
 
-                  cd openwrt
-                  cp ../openwrt-18.01.raspberrypi.config .config
-                  make oldconfig
-                  make -j32 V=s
-                '''
-              }
-
-              stage('Pine64') {
-                sh '''#!/bin/bash
-                  set -xe
-
-                  cd openwrt
-                  cp ../openwrt-18.01.pine64.config .config
-                  make oldconfig
-                  make -j32 V=s
-                '''
-              }
-          }
-        }
-      }
+        cd openwrt
+        cp ../openwrt-18.01.pine64.config .config
+        make oldconfig
+        make -j32 V=s
+      '''
     }
   }
 }
