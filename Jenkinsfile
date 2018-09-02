@@ -6,8 +6,6 @@ node('docker') {
 
         checkout scm
 
-	cd $HOME_DIR
-
         def env = docker.image('irishmarco/openwrt-builder:18.04')
 
         env.inside("") {
