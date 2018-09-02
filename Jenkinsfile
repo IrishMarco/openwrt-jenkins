@@ -23,6 +23,7 @@ node('docker') {
                   fi
                   cd openwrt
                   git pull
+                  pwd
 
                   ../docker-wrapper.sh ./scripts/feeds update -a
                   ../docker-wrapper.sh ./scripts/feeds install -a
