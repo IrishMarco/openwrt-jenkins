@@ -33,6 +33,7 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.x86_32.config .config
+                  make oldconfig
                   make -j32
                 '''
               }
@@ -43,6 +44,7 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.x86_64.config .config
+                  make oldconfig
                   make -j32
                 '''
               }
@@ -53,6 +55,7 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.raspberrypi.config .config
+                  make oldconfig
                   make -j32
                 '''
               }
@@ -63,6 +66,7 @@ node('docker') {
 
                   cd openwrt
                   cp ../openwrt-18.01.pine64.config .config
+                  make oldconfig
                   make -j32
                 '''
               }
