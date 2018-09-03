@@ -1,18 +1,14 @@
 
 node('docker') {
 
-  def app = docker {
-      image 'irishmarco/openwrt-builder:18.04'
-      args  'e USER=jenkins'
-    }
-  }
+  def app = docker.build('irishmarco/openwrt-builder:18.04')
 
   stage('Get repo') {
     checkout scm
   }
 
   stage('Prepare environment') {
-    app.inside {
+    app.inside("-e USER=jenkins") {
       sh '''#!/bin/bash
         set -xe
 
