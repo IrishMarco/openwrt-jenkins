@@ -1,7 +1,7 @@
 
 node('docker') {
 
-  def app = docker.build('irishmarco/openwrt-builder:18.04')
+  def app = docker.image('irishmarco/openwrt-builder:18.04')
 
   stage('Get repo') {
     checkout scm
