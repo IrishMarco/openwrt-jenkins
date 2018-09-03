@@ -8,7 +8,7 @@ node('docker') {
   }
 
   stage('Prepare environment') {
-    app.inside("-e USER=jenkins") {
+    app.inside(" -e USER=jenkins -u jenkins:jenkins ") {
       sh '''#!/bin/bash
         set -xe
 
