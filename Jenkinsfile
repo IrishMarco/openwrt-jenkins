@@ -1,6 +1,7 @@
 
 node('docker') {
-  app {
+
+  def app {
     docker {
       image 'irishmarco/openwrt-builder:18.04'
       args  'e USER=jenkins'
