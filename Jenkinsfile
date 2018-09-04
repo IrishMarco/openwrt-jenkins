@@ -1,7 +1,7 @@
 
 node('docker') {
 
-  def app = docker.image('irishmarco/openwrt-builder:18.04', '-e USER=jenkins -u jenkins:jenkins ')
+  def app = docker.image('arris/openwrt-build-server', '-e USER=mrizo -u mrizo:mrizo ')
 
   stage('Get repo') {
     checkout scm
